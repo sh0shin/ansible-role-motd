@@ -1,0 +1,27 @@
+---
+
+# enabled
+motd_enabled: true
+
+# mode/owner/group/backup defaults
+motd_file_mode: "0444"
+motd_dir_mode: "0755"
+motd_owner: "root"
+motd_group: "root"
+motd_backup: true
+
+# motd
+motd_file: "/etc/motd"
+
+motd_hostname: '{{ inventory_hostname }}'
+motd_hostname_short: '{{ inventory_hostname_short }}'
+motd_domain: '{{ inventory_hostname | replace(inventory_hostname_short ~ ".", "") }}'
+
+#motd_description: "..."
+#motd_instruction: "..."
+
+motd_freebsd_rc_cfg_file: "/etc/rc.conf.d/motd"
+motd_freebsd_rc_cfg_update_motd: false
+
+# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# eof

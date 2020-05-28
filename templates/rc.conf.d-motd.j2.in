@@ -1,0 +1,7 @@
+# {{ motd_freebsd_rc_cfg_file }}
+# {{ ansible_managed }}
+
+update_motd="{% if motd_freebsd_rc_cfg_update_motd is sameas true %}YES{% elif motd_freebsd_rc_cfg_update_motd is sameas false %}NO{% else %}NO{% endif %}"
+
+# vim: set sw=2 ts=2 et :
+# eof

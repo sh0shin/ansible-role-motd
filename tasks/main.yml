@@ -1,0 +1,108 @@
+---
+
+# forced os variables
+- name: forced os variables
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - '{{ ansible_distribution }}-{{ ansible_machine | default("none") }}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_release | default(0) }}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
+        - 'main.yml'
+      paths:
+        - 'vars'
+  when: motd_enabled
+        and ansible_os_family | string in motd_os_family_supported
+  tags: [ motd ]
+
+# info/facts
+- name: get latest facts
+  setup:
+  when: ansible_os_family | string in motd_os_family_supported
+        and motd_enabled
+  tags: [ motd ]
+
+
+# motd
+- name: motd (template)
+  template:
+    dest: '{{ motd_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ motd_file_mode | default(motd_file_mode) }}'
+    owner: '{{ motd_file_owner | default(motd_owner) }}'
+    group: '{{ motd_file_group | default(motd_group) }}'
+    backup: '{{ motd_file_backup | default(motd_backup) }}'
+    validate: '{{ motd_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "motd"
+    tpl_presence: '{{ motd_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.{{ motd_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ motd_hostname_short }}.j2'
+        - '{{ tpl_presence }}.{{ motd_domain }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: motd_enabled
+        and ansible_os_family | string in motd_os_family_supported
+  tags: [ motd ]
+
+# freebsd rc
+- name: freebsd rc (template)
+  template:
+    dest: '{{ motd_freebsd_rc_cfg_file }}'
+    src: "{{ lookup('first_found', params) }}"
+    #
+    mode: '{{ motd_freebsd_rc_cfg_file_mode | default(motd_file_mode) }}'
+    owner: '{{ motd_freebsd_rc_cfg_file_owner | default(motd_owner) }}'
+    group: '{{ motd_freebsd_rc_cfg_file_group | default(motd_group) }}'
+    backup: '{{ motd_freebsd_rc_cfg_file_backup | default(motd_backup) }}'
+    validate: '{{ motd_freebsd_rc_cfg_file_validate | default(omit) }}'
+  vars:
+    tpl_default: "rc.conf.d-motd"
+    tpl_presence: '{{ motd_freebsd_rc_cfg_file_template | default(tpl_default) }}'
+    params:
+      files:
+        - '{{ tpl_presence }}.{{ inventory_hostname }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
+        - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
+        - '{{ tpl_presence }}.j2'
+        - '{{ tpl_presence }}.j2.in' # role default
+      paths:
+        - 'templates'
+  when: motd_enabled
+        and ansible_os_family | string in motd_os_family_supported
+        and ansible_os_family == 'FreeBSD'
+  tags: [ motd ]
+
+# openbsd
+- name: openbsd motd login
+  blockinfile:
+    dest: '/etc/login.conf'
+    insertafter: "^default:\\\\$"
+    block: "\t:welcome={{ motd_file }}:\\"
+    marker: "\t#: {mark} ANSIBLE MANAGED BLOCK :\\"
+    backup: yes
+  notify:
+    - update_login_database
+  when: motd_enabled
+        and ansible_os_family | string in motd_os_family_supported
+        and ansible_os_family == 'OpenBSD'
+  tags: [ motd ]
+
+# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# eof
