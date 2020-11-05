@@ -16,9 +16,11 @@ galaxy_info:
     - name: EL
       versions:
         - all
+
     - name: FreeBSD
       versions:
         - all
+
     - name: OpenBSD
       versions:
         - all
