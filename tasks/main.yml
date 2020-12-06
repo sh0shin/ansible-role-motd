@@ -14,6 +14,7 @@
         - '{{ ansible_os_family }}.yml'
         - 'main.yml'
       paths:
+        - '{{ inventory_dir }}/vars'
         - 'vars'
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
@@ -54,6 +55,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
@@ -83,6 +85,7 @@
         - '{{ tpl_presence }}.j2'
         - '{{ tpl_presence }}.j2.in' # role default
       paths:
+        - '{{ inventory_dir }}/templates'
         - 'templates'
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
@@ -104,5 +107,5 @@
         and ansible_os_family == 'OpenBSD'
   tags: [ motd ]
 
-# vim: set syn=yaml sw=2 ts=2 et colorcolumn=160 :
+# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
 # eof
