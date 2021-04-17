@@ -1,19 +1,19 @@
-{% if ansible_system == ansible_distribution                                                                                                    %}
-{%  set motd_system = ansible_system                                                                                                            %}
-{% else                                                                                                                                         %}
-{%  set motd_system = ansible_distribution + ' ' + ansible_system                                                                               %}
-{% endif                                                                                                                                        %}
-{% set motd_info = motd_system + ' ' + ansible_distribution_version + ' (' + ansible_distribution_release|upper + ') ' + ansible_machine|upper  %}
-{% if motd_description is defined                                                                                                               %}
-{%  set motd_desc = ansible_managed + ': ' + motd_description                                                                                   %}
-{% else                                                                                                                                         %}
-{%  set motd_desc = ansible_managed                                                                                                             %}
-{% endif                                                                                                                                        %}
-{% if motd_instruction is defined                                                                                                               %}
-{%  set motd_inst = motd_instruction                                                                                                            %}
-{% else                                                                                                                                         %}
-{%  set motd_inst = ''                                                                                                                          %}
-{% endif                                                                                                                                        %}
+{% if ansible_system == ansible_distribution                                                               %}
+{%  set motd_system = ansible_system                                                                       %}
+{% else                                                                                                    %}
+{%  set motd_system = ansible_distribution + ' ' + ansible_system                                          %}
+{% endif                                                                                                   %}
+{% set motd_info = motd_system + ' (' + ansible_distribution_release|upper + ') ' + ansible_machine|upper  %}
+{% if motd_description is defined                                                                          %}
+{%  set motd_desc = ansible_managed + ': ' + motd_description                                              %}
+{% else                                                                                                    %}
+{%  set motd_desc = ansible_managed                                                                        %}
+{% endif                                                                                                   %}
+{% if motd_instruction is defined                                                                          %}
+{%  set motd_inst = motd_instruction                                                                       %}
+{% else                                                                                                    %}
+{%  set motd_inst = ''                                                                                     %}
+{% endif                                                                                                   %}
 
 {{ motd_info | center(width=78) }}
 {{ motd_hostname | center(width=78) | upper }}
