@@ -56,10 +56,12 @@
         - '{{ tpl_presence }}.{{ motd_hostname_short }}.j2'
         - '{{ tpl_presence }}.{{ motd_domain }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.in.j2'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
+  notify:
+    - restart_motd
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
   tags: [ motd ]
@@ -86,10 +88,12 @@
         - '{{ tpl_presence }}.{{ ansible_distribution }}.j2'
         - '{{ tpl_presence }}.{{ ansible_os_family }}.j2'
         - '{{ tpl_presence }}.j2'
-        - '{{ tpl_presence }}.j2.in' # role default
+        - '{{ tpl_presence }}.in.j2'  # role default
       paths:
         - '{{ inventory_dir }}/templates'
         - 'templates'
+  notify:
+    - restart_motd
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
         and ansible_os_family == 'FreeBSD'

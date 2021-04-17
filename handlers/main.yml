@@ -1,7 +1,10 @@
 ---
 
+- name: restart_motd
+  service:
+    name: motd
+    state: restarted
+  when: motd_freebsd_rc_cfg_update_motd
+
 - name: update_login_database
   command: cap_mkdb /etc/login.conf
-
-# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
-# eof
