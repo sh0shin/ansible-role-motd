@@ -2,3 +2,5 @@
 
 motd_group: "wheel"
 motd_file: "/etc/motd.template"
+
+motd_freebsd_rc_cfg_update_motd: yes
