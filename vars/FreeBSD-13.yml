@@ -1,0 +1,4 @@
+---
+
+motd_group: "wheel"
+motd_file: "/etc/motd.template"
