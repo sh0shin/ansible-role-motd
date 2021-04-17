@@ -30,7 +30,6 @@
         and motd_enabled
   tags: [ motd ]
 
-
 # motd
 - name: motd (template)
   template:
