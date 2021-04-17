@@ -1,8 +1,4 @@
 ---
 
 motd_group: "operator"
-
 motd_file: "/etc/motd.local"
-
-# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
-# eof

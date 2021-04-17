@@ -109,6 +109,3 @@
         and ansible_os_family | string in motd_os_family_supported
         and ansible_os_family == 'OpenBSD'
   tags: [ motd ]
-
-# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
-# eof

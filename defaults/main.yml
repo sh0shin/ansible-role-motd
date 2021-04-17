@@ -22,6 +22,3 @@ motd_domain: '{{ inventory_hostname | replace(inventory_hostname_short ~ ".", ""
 
 motd_freebsd_rc_cfg_file: "/etc/rc.conf.d/motd"
 motd_freebsd_rc_cfg_update_motd: no
-
-# vim: set ft=yaml.ansible sw=2 ts=2 et colorcolumn=160 :
-# eof
