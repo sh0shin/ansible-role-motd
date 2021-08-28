@@ -2,33 +2,19 @@
 
 # forced os variables
 - name: forced os variables
-  include_vars: "{{ lookup('first_found', params) }}"
-  vars:
-    params:
-      files:
-        - '{{ role_name }}-{{ inventory_hostname }}.yml'
-        - '{{ role_name }}-{{ inventory_hostname_short }}.yml'
-        - '{{ role_name }}.yml'
-        - '{{ ansible_distribution }}-{{ ansible_machine | default("none") }}.yml'
-        - '{{ ansible_distribution }}-{{ ansible_distribution_release | default(0) }}.yml'
-        - '{{ ansible_distribution }}-{{ ansible_distribution_version | default(0) }}.yml'
-        - '{{ ansible_distribution }}-{{ ansible_distribution_major_version | default(0) }}.yml'
-        - '{{ ansible_distribution }}.yml'
-        - '{{ ansible_os_family }}.yml'
-        - 'main.yml'
-      paths:
-        - '{{ inventory_dir }}/vars'
-        - 'vars'
+  include: forced_os.yml
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
-  tags: [ motd ]
+  tags:
+    - motd
 
 # info/facts
 - name: get latest facts
   setup:
   when: ansible_os_family | string in motd_os_family_supported
         and motd_enabled
-  tags: [ motd ]
+  tags:
+    - motd
 
 # motd
 - name: motd (template)
@@ -63,7 +49,8 @@
     - restart_motd
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
-  tags: [ motd ]
+  tags:
+    - motd
 
 # freebsd rc
 - name: freebsd rc (template)
@@ -96,7 +83,8 @@
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
         and ansible_os_family == 'FreeBSD'
-  tags: [ motd ]
+  tags:
+    - motd
 
 # openbsd
 - name: openbsd motd login
@@ -111,4 +99,5 @@
   when: motd_enabled
         and ansible_os_family | string in motd_os_family_supported
         and ansible_os_family == 'OpenBSD'
-  tags: [ motd ]
+  tags:
+    - motd
