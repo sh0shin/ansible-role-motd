@@ -1,7 +1,7 @@
 ---
 
 # enabled
-motd_enabled: yes
+motd_enabled: no
 
 # mode/owner/group/backup defaults
 motd_file_mode: "0444"
