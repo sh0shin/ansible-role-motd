@@ -17,7 +17,7 @@
     - motd
 
 # motd
-- name: motd (template)
+- name: motd file (template)
   template:
     dest: '{{ motd_file }}'
     src: "{{ lookup('first_found', params) }}"
